@@ -1,0 +1,43 @@
+// Design-Tokens: einzige Quelle ist `src/tailwind.css` (@theme).
+// SCSS liest die von Tailwind ausgegebenen CSS-Variablen.
+// Die Werte hier nicht duplizieren, damit beide Stilsysteme übereinstimmen.
+$swg-black: var(--color-swg-black);
+$swg-white: var(--color-swg-white);
+$swg-blue-dark: var(--color-swg-blue-dark);
+$swg-blue-mid: var(--color-swg-blue-mid);
+$swg-blue-light: var(--color-swg-blue-light);
+$swg-green-light: var(--color-swg-green-light);
+$swg-green: var(--color-swg-green);
+$swg-green-dark: var(--color-swg-green-dark);
+$swg-yellow: var(--color-swg-yellow);
+$swg-purple: var(--color-swg-purple);
+$swg-bg: var(--color-swg-bg);
+
+$swg-district-default: var(--color-swg-district-default);
+$swg-district-started: var(--color-swg-district-started);
+$swg-district-completed: var(--color-swg-district-completed);
+
+$font-display: var(--font-display);
+$font-text: var(--font-text);
+
+@mixin text-body {
+  font-family: $font-text;
+}
+
+@mixin text-display {
+  font-family: $font-display;
+}
+
+@mixin focus-ring {
+  outline: 2px solid $swg-blue-mid;
+  outline-offset: 2px;
+}
+
+@mixin safe-area-bottom($extra: 0) {
+  padding-bottom: calc(#{$extra} + env(safe-area-inset-bottom, 0));
+}
+
+@mixin min-viewport-height {
+  min-height: 100vh;
+  min-height: 100dvh;
+}

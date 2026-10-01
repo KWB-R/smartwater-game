@@ -1,0 +1,72 @@
+{
+  "kind": "singleType",
+  "collectionName": "settings",
+  "info": {
+    "singularName": "setting",
+    "pluralName": "settings",
+    "displayName": "Settings"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Schwammtastisches Spiel Berlin"
+    },
+    "meta_description": {
+      "type": "text"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "logo_inverted": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "files",
+        "images"
+      ]
+    },
+    "externallinks": {
+      "type": "component",
+      "component": "component.link-component",
+      "repeatable": true
+    },
+    "enabled": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "shareComponent": {
+      "type": "component",
+      "component": "component.share-component",
+      "repeatable": false,
+      "required": true
+    },
+    "landscapeScreenComponent": {
+      "type": "component",
+      "component": "component.landscape-screen-component",
+      "repeatable": false
+    },
+    "legalLinks": {
+      "type": "component",
+      "component": "component.link-component",
+      "repeatable": true
+    },
+    "consent": {
+      "type": "component",
+      "component": "component.consent-component",
+      "repeatable": false,
+      "required": true
+    }
+  }
+}

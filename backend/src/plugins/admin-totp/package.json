@@ -1,0 +1,25 @@
+{
+  "name": "admin-totp",
+  "version": "0.0.1",
+  "private": true,
+  "description": "TOTP 2FA for Strapi Admin login",
+  "strapi": {
+    "name": "admin-totp",
+    "displayName": "Admin TOTP",
+    "description": "Zwei-Faktor-Authentifizierung (TOTP) für das Admin-Panel",
+    "kind": "plugin"
+  },
+  "exports": {
+    "./strapi-admin": {
+      "import": "./admin/src/index.js",
+      "require": "./admin/src/index.js",
+      "default": "./admin/src/index.js"
+    },
+    "./strapi-server": {
+      "import": "./server/src/index.js",
+      "require": "./server/src/index.js",
+      "default": "./server/src/index.js"
+    },
+    "./package.json": "./package.json"
+  }
+}

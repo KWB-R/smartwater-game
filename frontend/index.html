@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/Icon_AppIcon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="180x180"
+      href="/pwa-icon-180.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      type="image/png"
+      sizes="192x192"
+      href="/pwa-icon-192.png"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#f5f5f5" />
+    <meta
+      name="description"
+      content="Schwammtastisch: Verwandle Grau in Blau-Grün und entdecke spielerisch, wie das Schwammstadt-Prinzip Berlin kühler, grüner und lebenswerter macht."
+    />
+    <link rel="canonical" href="__SITE_URL__/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content="Schwammtastisches Spiel Berlin" />
+    <meta property="og:title" content="Schwammtastisches Spiel Berlin" />
+    <meta
+      property="og:description"
+      content="Schwammtastisch: Verwandle Grau in Blau-Grün und entdecke spielerisch, wie das Schwammstadt-Prinzip Berlin kühler, grüner und lebenswerter macht."
+    />
+    <meta property="og:url" content="__SITE_URL__/" />
+    <meta property="og:image" content="__SITE_URL__/Link-Preview.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="628" />
+    <meta
+      property="og:image:alt"
+      content="Schwammtastisch — Das Game zur Schwammstadt"
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Schwammtastisches Spiel Berlin" />
+    <meta
+      name="twitter:description"
+      content="Schwammtastisch: Verwandle Grau in Blau-Grün und entdecke spielerisch, wie das Schwammstadt-Prinzip Berlin kühler, grüner und lebenswerter macht."
+    />
+    <meta name="twitter:image" content="__SITE_URL__/Link-Preview.png" />
+    <meta
+      name="twitter:image:alt"
+      content="Schwammtastisch — Das Game zur Schwammstadt"
+    />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-title"
+      content="Schwammtastisches Spiel Berlin"
+    />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>Schwammtastisches Spiel Berlin</title>
+    <!-- Boot-Loader: gleiches Layout wie FullscreenLoadingScreen, vor JS/CSS-Bundle. -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #f9f3f0;
+      }
+      .boot-loading {
+        position: fixed;
+        inset: 0;
+        z-index: 1000001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        background: #f9f3f0;
+        padding: max(1.25rem, env(safe-area-inset-top)) 1.25rem
+          max(1.25rem, env(safe-area-inset-bottom));
+      }
+      .boot-loading__wrap {
+        position: relative;
+        width: 100%;
+        max-width: min(100%, 25rem);
+        /* Platz für Mascot oberhalb der Card-Kante (w-40 ≈ 10rem) */
+        padding-top: 10rem;
+      }
+      .boot-loading__card {
+        position: relative;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+        border-radius: 0.75rem;
+        background: #fff;
+        padding: 1.25rem 1.5rem;
+        text-align: center;
+      }
+      .boot-loading__mascot {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        z-index: 1;
+        width: 10rem;
+        height: auto;
+        transform: translate(-50%, -95%);
+        pointer-events: none;
+        user-select: none;
+      }
+      .boot-loading__label {
+        margin: 0;
+        font-family:
+          "Right Grotesk",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.15;
+        color: #375172;
+      }
+      .boot-loading__track {
+        margin-top: 1rem;
+        height: 0.5rem;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 9999px;
+        background: #f9f3f0;
+      }
+      .boot-loading__bar {
+        display: block;
+        height: 100%;
+        width: 42%;
+        border-radius: 9999px;
+        background: #7de3a9;
+        animation: boot-loading-scan 1.05s ease-in-out infinite;
+      }
+      @keyframes boot-loading-scan {
+        0% {
+          transform: translateX(-105%);
+        }
+        100% {
+          transform: translateX(340%);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .boot-loading__bar {
+          animation: none;
+          transform: translateX(70%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot-loading" role="status" aria-live="polite">
+        <div class="boot-loading__wrap">
+          <div class="boot-loading__card">
+            <img
+              class="boot-loading__mascot"
+              src="/waiting_1_animated.svg"
+              alt=""
+              aria-hidden="true"
+              width="160"
+              height="154"
+              draggable="false"
+            />
+            <p class="boot-loading__label">Inhalte werden geladen</p>
+            <div
+              class="boot-loading__track"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuetext="Laden …"
+              aria-label="Ladefortschritt"
+            >
+              <span class="boot-loading__bar"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

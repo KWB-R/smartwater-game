@@ -1,0 +1,9 @@
+@use "./styles/fonts";
+@use "./styles/safe-area";
+@use "./styles/root";
+@use "./styles/view-transitions";
+/**
+ * Gemeinsame Feature-Stile einmal laden, damit Karten- und Levelstile sie nicht doppelt ausgeben.
+ */
+@use "./styles/mapDetailSheet";
+@use "./styles/celebrationEffects";

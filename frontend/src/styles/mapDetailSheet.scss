@@ -1,0 +1,277 @@
+.map-detail-sheet__title {
+  font-family: var(--font-text, "Right Grotesk", system-ui, sans-serif);
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Den Footer im Kartendetail unten halten und das Bild in die freie Höhe einpassen. */
+.map-detail-sheet {
+  display: flex;
+  min-height: 100%;
+  flex: 1 1 0%;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-top: 6.25rem;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .strapi-blocks-view__heading {
+    font-family: var(--font-text, "Right Grotesk", system-ui, sans-serif);
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .strapi-blocks-view {
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+  .strapi-blocks-view__heading--h1 {
+    margin-top: 1rem;
+  }
+}
+
+.map-detail-sheet__stack {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex: 1 1 auto;
+  padding: 0 1rem;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.map-detail-sheet__stars {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.1rem;
+}
+
+.map-detail-sheet__district-name {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-text, "Right Grotesk", system-ui, sans-serif);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--swg-black, #000);
+}
+
+.map-detail-sheet__stars-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 999px;
+  background: var(--swg-green-light);
+  padding: 0.35rem 0.85rem;
+}
+
+.map-detail-sheet__mission {
+  display: flex;
+  align-items: center;
+  margin-top: 0.75rem;
+  border: 0;
+  border-radius: 42px;
+  background: var(--swg-green-light);
+  padding: 1.5rem 1.5rem 1.65rem;
+}
+
+.map-detail-sheet__mission-body {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.map-detail-sheet__mission-kicker {
+  font-family: var(--font-light, inherit);
+  font-style: normal;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--swg-black, #000);
+}
+
+.map-detail-sheet__mission-name {
+  display: block;
+  font-family: var(--font-text, inherit);
+  font-style: normal;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--swg-black, #000);
+}
+
+.map-detail-sheet__mission-content {
+  width: 100%;
+  margin-top: 0.45rem;
+  text-align: left;
+
+  .strapi-blocks-view {
+    font-size: 1rem;
+    line-height: 1.25;
+  }
+}
+
+.map-detail-sheet__premise {
+  position: relative;
+  flex: 0 0 auto;
+  align-self: stretch;
+  border: 0;
+  border-radius: 42px;
+  background: #fff;
+  padding: 1.5rem 1.5rem 1.65rem;
+}
+
+.map-detail-sheet__premise-crown {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 2;
+  display: block;
+  width: 3.75rem;
+  transform: translate(-50%, -70%);
+}
+
+.map-detail-sheet__premise-max-badge {
+  position: relative;
+  z-index: 2;
+  margin: 0.15rem 0 0.35rem;
+  pointer-events: none;
+  p {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+  }
+}
+
+.map-detail-sheet__premise-mascot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.map-detail-sheet__premise-mascot-img {
+  pointer-events: none;
+  display: block;
+  width: auto;
+  margin-top: 1rem;
+  max-width: min(100%, 22rem);
+  height: min(34dvh, 13rem);
+  max-height: min(34dvh, 13rem);
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* Inline-SVGs auch auf Retina- und iOS-Geräten scharf darstellen. */
+.map-detail-sheet__premise-mascot-img.cms-svg-image {
+  width: fit-content;
+  line-height: 0;
+  object-fit: unset;
+
+  > svg {
+    display: block;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    max-height: inherit;
+  }
+}
+
+.map-detail-sheet__premise-text {
+  min-height: 0;
+  font-family: var(
+    --font-display,
+    "Right Grotesk Compact",
+    system-ui,
+    sans-serif
+  );
+  font-style: normal;
+  font-weight: 400;
+  text-align: center;
+
+  .strapi-blocks-view {
+    font-family: inherit;
+    font-size: 1.25rem;
+    font-style: normal;
+    line-height: 1.25;
+  }
+
+  /* Die globale Absatzschrift für diesen Text ausdrücklich überschreiben. */
+  .strapi-blocks-view__paragraph,
+  .strapi-blocks-view__list,
+  .strapi-blocks-view__quote,
+  p,
+  li {
+    font-family: var(
+      --font-display,
+      "Right Grotesk Compact",
+      system-ui,
+      sans-serif
+    );
+    font-style: normal;
+    font-weight: 400;
+  }
+}
+.map-detail-sheet__mascot {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.map-detail-sheet__mascot--lead {
+  margin-top: 0;
+}
+
+.map-detail-sheet__mascot-img {
+  pointer-events: none;
+  display: block;
+  box-sizing: border-box;
+  width: auto;
+  max-width: min(70vw, 18rem);
+  height: min(32dvh, 16rem);
+  max-height: min(32dvh, 16rem);
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 8px 24px rgb(55 81 114 / 0.35));
+}
+
+.map-detail-sheet__problem {
+  flex: 1 1 0%;
+  margin-top: 0.75rem;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.level-sheet-mascot-top {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.level-sheet-mascot-top__img {
+  pointer-events: none;
+  display: block;
+  box-sizing: border-box;
+  width: auto;
+  max-width: min(70vw, 20rem);
+  height: min(48dvh, 28rem);
+  object-fit: contain;
+  object-position: bottom;
+  filter: drop-shadow(0 8px 24px rgb(55 81 114 / 0.35));
+}

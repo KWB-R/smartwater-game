@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_layout_default_pages",
+  "info": {
+    "displayName": "DefaultPage",
+    "icon": "bold"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "blocks",
+      "required": true
+    }
+  },
+  "config": {}
+}

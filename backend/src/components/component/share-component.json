@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_component_share_components",
+  "info": {
+    "displayName": "shareComponent",
+    "icon": "bold"
+  },
+  "options": {},
+  "attributes": {
+    "shareCTA": {
+      "type": "blocks"
+    },
+    "shareContent": {
+      "type": "text",
+      "default": "Berlin braucht mehr Schwammstadt-Power. Probiers aus: [[LINK]]"
+    },
+    "shareFallbackImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  },
+  "config": {}
+}

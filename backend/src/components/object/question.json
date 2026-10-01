@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_object_questions",
+  "info": {
+    "displayName": "Question",
+    "icon": "question"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "blocks",
+      "required": true
+    },
+    "answers": {
+      "type": "component",
+      "component": "object.answer",
+      "repeatable": true,
+      "required": true,
+      "min": 1
+    }
+  },
+  "config": {}
+}

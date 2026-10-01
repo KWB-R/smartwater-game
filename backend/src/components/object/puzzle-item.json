@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_object_puzzle_items",
+  "info": {
+    "displayName": "puzzleItem",
+    "icon": "puzzle"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "uniqueId": {
+      "type": "string",
+      "required": true
+    },
+    "punkte": {
+      "type": "component",
+      "component": "object.punkte",
+      "repeatable": false,
+      "required": true
+    },
+    "content": {
+      "type": "blocks",
+      "required": false
+    },
+    "kombiChild": {
+      "type": "customField",
+      "customField": "global::puzzle-unique-id-ref",
+      "required": false
+    }
+  },
+  "config": {}
+}

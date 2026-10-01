@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_component_consent_components",
+  "info": {
+    "displayName": "consentComponent",
+    "icon": "bold"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "blocks",
+      "required": true
+    },
+    "acceptButton": {
+      "type": "string",
+      "default": "Statistik erlauben",
+      "required": true
+    },
+    "denyButton": {
+      "type": "string",
+      "default": "Nein, danke",
+      "required": true
+    }
+  },
+  "config": {}
+}

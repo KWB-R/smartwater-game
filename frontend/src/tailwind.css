@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+@theme {
+  --color-swg-black: #152026;
+  --color-swg-white: #ffffff;
+  --color-swg-blue-dark: #375172;
+  --color-swg-blue-mid: #4982cf;
+  --color-swg-blue-light: #7fbeeb;
+  --color-swg-green-light: #7de3a9;
+  --color-swg-green: #7de3a9;
+  --color-swg-green-dark: #065b4b;
+  --color-swg-yellow: #faeb69;
+  --color-swg-purple: #9b23f7;
+  --color-swg-bg: #f9f3f0;
+
+  --color-swg-district-default: #7fbeeb;
+  --color-swg-district-started: #faeb69;
+  --color-swg-district-completed: #7de3a9;
+
+  --font-display: "Right Grotesk Compact", system-ui, -apple-system, sans-serif;
+  --font-text: "Right Grotesk", system-ui, -apple-system, sans-serif;
+
+  /**
+   * Zentrale, aufsteigende Ebenen für Overlays. Verwendung in Tailwind über z-(--z-overlay), in SCSS über var(--z-overlay).
+   */
+  --z-overlay-backdrop: 900000;
+  --z-overlay: 900010;
+  --z-update-banner: 999999;
+  --z-loading-screen: 1000001;
+  --z-menu: 2147483000;
+  --z-menu-top: 2147483001;
+  --z-menu-toggle: 2147483002;
+
+  --leading-tight: 1.15;
+
+  --animate-level-toast-in: level-toast-in 0.35s ease-out;
+  --animate-level-tile-thumb-progress-scan: level-tile-thumb-progress-scan 1.05s
+    ease-in-out infinite;
+  --animate-mission-bar-pulse: mission-bar-pulse 0.55s ease-out 2;
+  --animate-main-menu-enter: main-menu-enter 0.42s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-main-menu-exit: main-menu-exit 0.42s cubic-bezier(0.22, 1, 0.36, 1)
+    forwards;
+  /**
+   * Mit fill-mode: backwards nach Animationsende keine Transformation beibehalten.
+   * Dauerhafte Transformationen können SVG-Bilder auf Smartphones unscharf darstellen.
+   */
+  --animate-page-enter: page-enter 0.44s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  --animate-page-fade-in: page-fade-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  --animate-map-detail-overlay-in: map-detail-overlay-in 0.22s ease-out both;
+  --animate-level-result-library-out: level-result-library-out 0.45s ease-out
+    forwards;
+}
+
+@keyframes mission-bar-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+@keyframes level-tile-thumb-progress-scan {
+  0% {
+    transform: translateX(-105%);
+  }
+  100% {
+    transform: translateX(340%);
+  }
+}
+
+@keyframes level-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes main-menu-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes main-menu-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-1.5rem);
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes map-detail-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes level-result-library-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Galeriestile für Entsättigung, Aufhellung und Vergleichsanimation. */
+@utility gallery-unsolved-photo {
+  filter: grayscale(1) sepia(0.14) hue-rotate(186deg) saturate(1.35)
+    brightness(1.03);
+}
+
+@utility gallery-unsolved-wash {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(127 190 235 / 0.28);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+}
+
+@layer components {
+  /* Nur die Beschriftung animieren; Maske und Schieber folgen derselben JavaScript-Position. */
+  .gallery-ba-intro {
+    --gallery-ba-intro-ms: 900ms;
+    --gallery-ba-intro-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .gallery-ba-intro .gallery-ba-compare-labels {
+    transition: opacity var(--gallery-ba-intro-ms) var(--gallery-ba-intro-ease);
+  }
+}

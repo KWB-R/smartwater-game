@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "missions",
+  "info": {
+    "singularName": "mission",
+    "pluralName": "missions",
+    "displayName": "Mission"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "blocks",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "bio",
+        "water_protection",
+        "climate",
+        "green_spaces",
+        "green_water",
+        "flood_prevention"
+      ]
+    }
+  }
+}

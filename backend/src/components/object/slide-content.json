@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_object_slide_contents",
+  "info": {
+    "displayName": "SlideContent",
+    "icon": "chartBubble"
+  },
+  "options": {},
+  "attributes": {
+    "content": {
+      "type": "blocks",
+      "required": false
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "files",
+        "images",
+        "videos"
+      ]
+    }
+  },
+  "config": {}
+}

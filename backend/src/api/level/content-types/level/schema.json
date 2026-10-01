@@ -1,0 +1,171 @@
+{
+  "kind": "collectionType",
+  "collectionName": "levels",
+  "info": {
+    "singularName": "level",
+    "pluralName": "levels",
+    "displayName": "Level"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "targetField": "name",
+      "required": true
+    },
+    "shareable": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true,
+      "default": true
+    },
+    "copyright": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "primaryLevel": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true,
+      "default": false
+    },
+    "assetsFolder": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true
+    },
+    "problemContent": {
+      "type": "blocks",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true
+    },
+    "bezirk": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::bezirk.bezirk",
+      "inversedBy": "levels"
+    },
+    "maskottchen": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "component": "object.maskottchen",
+      "repeatable": false,
+      "required": true
+    },
+    "puzzleItems": {
+      "type": "dynamiczone",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "components": [
+        "object.puzzle-item",
+        "object.end-animation"
+      ],
+      "required": true
+    },
+    "mission": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::mission.mission"
+    },
+    "quiz": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "component": "object.question",
+      "repeatable": false,
+      "required": true
+    },
+    "maxPuzzleItems": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true,
+      "default": 3,
+      "min": 1
+    },
+    "winContent": {
+      "type": "blocks",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      }
+    },
+    "minimumScorePercentage": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "required": true,
+      "default": 80
+    },
+    "mapMarkerPosition": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "component": "math.vector2",
+      "repeatable": false,
+      "required": false
+    }
+  }
+}

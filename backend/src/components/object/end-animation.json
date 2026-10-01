@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_object_end_animations",
+  "info": {
+    "displayName": "endAnimation",
+    "icon": "chartBubble"
+  },
+  "options": {},
+  "attributes": {
+    "uniqueId": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

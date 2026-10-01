@@ -1,0 +1,77 @@
+{
+  "collectionName": "components_object_punktes",
+  "info": {
+    "displayName": "punkte",
+    "icon": "apps"
+  },
+  "options": {},
+  "attributes": {
+    "bio_bonus": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "bio_isBonus": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "water_protection_bonus": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "water_protection_isBonus": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "climate_bonus": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "climate_isBonus": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "green_spaces_bonus": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "green_spaces_isBonus": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "green_water_bonus": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "green_water_isBonus": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "flood_prevention_bonus": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    },
+    "flood_prevention_isBonus": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  },
+  "config": {}
+}

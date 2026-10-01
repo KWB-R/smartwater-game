@@ -1,0 +1,406 @@
+.lichtenberg-layout-debug {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: #e8ecf1;
+  color: $swg-blue-dark;
+  height: 100%;
+}
+
+.lichtenberg-layout-debug__toolbar {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.5rem 1rem;
+  background: #fff;
+  border-bottom: 1px solid rgb(55 81 114 / 15%);
+}
+
+.lichtenberg-layout-debug__back {
+  font-weight: 600;
+  text-decoration: none;
+  color: $swg-blue-dark;
+}
+
+.lichtenberg-layout-debug__control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.lichtenberg-layout-debug__body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.lichtenberg-layout-debug__sidebar {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: min(22rem, 42vw);
+  min-width: 14rem;
+  max-height: 100%;
+  background: #fff;
+
+  border-right: 1px solid rgb(55 81 114 / 12%);
+}
+
+.lichtenberg-layout-debug__sidebar-list {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.5rem;
+}
+
+.lichtenberg-layout-debug__sidebar-group {
+  margin-bottom: 0.85rem;
+}
+
+.lichtenberg-layout-debug__sidebar-group-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.lichtenberg-layout-debug__sidebar-group-actions {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: flex-end;
+}
+
+.lichtenberg-layout-debug__sidebar-group-title {
+  margin: 0;
+  font-family: $font-display;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgb(55 81 114 / 75%);
+}
+
+.lichtenberg-layout-debug__stack-toggle {
+  flex-shrink: 0;
+  padding: 0.2rem 0.45rem;
+  border: 1px solid rgb(55 81 114 / 20%);
+  border-radius: 0.3rem;
+  background: #fff;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: $swg-blue-dark;
+  cursor: pointer;
+}
+
+.lichtenberg-layout-debug__layer-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lichtenberg-layout-debug__layer-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.lichtenberg-layout-debug__layer-row--selected {
+  outline: 2px solid #0ea5e9;
+  outline-offset: 1px;
+  border-radius: 0.35rem;
+}
+
+.lichtenberg-layout-debug__visibility-toggle {
+  flex-shrink: 0;
+  width: 2rem;
+  padding: 0.35rem 0;
+  border: none;
+  border-radius: 0.35rem;
+  background: rgb(55 81 114 / 8%);
+  font-size: 0.75rem;
+  line-height: 1;
+  color: $swg-blue-dark;
+  cursor: pointer;
+}
+
+.lichtenberg-layout-debug__visibility-toggle--off {
+  opacity: 0.45;
+}
+
+.lichtenberg-layout-debug__layer-select {
+  flex: 1;
+  min-width: 0;
+  padding: 0.4rem 0.5rem;
+  border: none;
+  border-radius: 0.35rem;
+  background: rgb(1 186 139 / 12%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: left;
+  color: $swg-blue-dark;
+  cursor: pointer;
+}
+
+.lichtenberg-layout-debug__layer-row--selected
+  .lichtenberg-layout-debug__layer-select {
+  background: rgb(14 165 233 / 18%);
+}
+
+.lichtenberg-layout-debug__scroll {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem;
+  touch-action: none;
+}
+
+.lichtenberg-layout-debug__scroll--panning {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.lichtenberg-layout-debug__stage-wrap {
+  position: relative;
+  margin: 0 auto;
+  box-shadow: 0 8px 32px rgb(55 81 114 / 18%);
+}
+
+.lichtenberg-layout-debug__stack {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lichtenberg-layout-debug__stack--main {
+  z-index: 1;
+}
+
+.lichtenberg-layout-debug__stack--sockets {
+  z-index: 2;
+}
+
+.lichtenberg-layout-debug__stage {
+  position: relative;
+  transform-origin: top left;
+  overflow: hidden;
+  background: transparent;
+}
+
+.lichtenberg-layout-debug__layer {
+  position: absolute;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+
+.lichtenberg-layout-debug__layer--selectable {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.lichtenberg-layout-debug__layer--selected {
+  outline: 3px solid #0ea5e9 !important;
+  outline-offset: -1px;
+  z-index: 20;
+}
+
+.lichtenberg-layout-debug__layer--selectable:focus-visible {
+  outline: 3px solid #0ea5e9;
+  outline-offset: 2px;
+}
+
+.lichtenberg-layout-debug__stage-wrap--outlines
+  .lichtenberg-layout-debug__layer:not(.lichtenberg-layout-debug__layer--video) {
+  background-color: var(--layer-debug-fill, transparent);
+}
+
+.lichtenberg-layout-debug__stage-wrap--outlines
+  .lichtenberg-layout-debug__layer {
+  outline: 2px dashed var(--layer-debug-outline, #64748b);
+  outline-offset: -1px;
+}
+
+.lichtenberg-layout-debug__layer-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  max-width: 100%;
+  padding: 0.3rem 0.55rem;
+  background: var(--layer-debug-label-bg, rgb(55 81 114 / 82%));
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  font-stretch: normal;
+  line-height: 1.2;
+  color: #fff;
+  letter-spacing: 0;
+  text-shadow: 0 1px 3px rgb(0 0 0 / 55%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.lichtenberg-layout-debug__layer--video {
+  background: transparent;
+}
+
+.lichtenberg-layout-debug__layer-video-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.lichtenberg-layout-debug__layer-img,
+.lichtenberg-layout-debug__layer-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  object-position: top left;
+  background: transparent;
+}
+
+.lichtenberg-layout-debug__layer-video {
+  /* Kein schwarzer Letterbox-Hintergrund des Players */
+  mix-blend-mode: normal;
+}
+
+.lichtenberg-layout-debug__layer-missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgb(220 50 50 / 25%);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #8b1a1a;
+  text-align: center;
+}
+
+.lichtenberg-layout-debug__stage-wrap--outlines
+  .lichtenberg-layout-debug__layer--socket {
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: var(--layer-debug-outline, #64748b);
+}
+
+.lichtenberg-layout-debug__compare {
+  flex-shrink: 0;
+  padding: 0.5rem;
+  border-top: 1px solid rgb(55 81 114 / 15%);
+  background: rgb(248 250 252);
+}
+
+.lichtenberg-layout-debug__compare--empty {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: rgb(55 81 114 / 80%);
+}
+
+.lichtenberg-layout-debug__compare--empty p {
+  margin: 0;
+}
+
+.lichtenberg-layout-debug__compare-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.lichtenberg-layout-debug__compare-title {
+  margin: 0;
+  font-family: $font-display;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.lichtenberg-layout-debug__compare-scroll {
+  max-height: min(40vh, 16rem);
+  overflow: auto;
+}
+
+.lichtenberg-layout-debug__compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.lichtenberg-layout-debug__compare-table th,
+.lichtenberg-layout-debug__compare-table td {
+  padding: 0.25rem 0.35rem;
+  border-bottom: 1px solid rgb(55 81 114 / 12%);
+  text-align: right;
+}
+
+.lichtenberg-layout-debug__compare-table th:first-child,
+.lichtenberg-layout-debug__compare-table td:first-child {
+  text-align: left;
+}
+
+.lichtenberg-layout-debug__compare-name {
+  max-width: 10rem;
+  vertical-align: top;
+}
+
+.lichtenberg-layout-debug__compare-label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lichtenberg-layout-debug__compare-source {
+  display: block;
+  font-size: 0.5625rem;
+  font-weight: 500;
+  color: rgb(55 81 114 / 65%);
+}
+
+.lichtenberg-layout-debug__compare-warn {
+  display: block;
+  font-size: 0.5625rem;
+  font-weight: 700;
+  color: #b45309;
+}
+
+.lichtenberg-layout-debug__compare-notes {
+  margin: 0.5rem 0 0;
+  padding-left: 1rem;
+  font-size: 0.625rem;
+  line-height: 1.35;
+  color: rgb(55 81 114 / 85%);
+}
+
+.lichtenberg-layout-debug__compare-table--delta {
+  margin-top: 0.65rem;
+}
+
+.lichtenberg-layout-debug__compare-caption {
+  margin: 0 0 0.35rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-align: left;
+  color: rgb(55 81 114 / 70%);
+}

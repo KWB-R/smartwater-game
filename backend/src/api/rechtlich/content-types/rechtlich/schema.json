@@ -1,0 +1,25 @@
+{
+  "kind": "singleType",
+  "collectionName": "rechtliches",
+  "info": {
+    "singularName": "rechtlich",
+    "pluralName": "rechtliches",
+    "displayName": "Rechtliches"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "content": {
+      "type": "blocks"
+    }
+  }
+}

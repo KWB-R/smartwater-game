@@ -1,0 +1,130 @@
+@use "@/styles/variables" as *;
+
+.home-landing {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: $swg-bg;
+  color: $swg-black;
+  font-family: "Right Grotesk Compact", var(--font-display, inherit);
+}
+
+.home-landing__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.home-landing__content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+  padding: calc(4.25rem + env(safe-area-inset-top, 0px)) 1.25rem 1rem;
+}
+
+.home-landing__scroll .strapi-blocks-view {
+  max-width: 22rem;
+  margin: 0 auto;
+  font-family: inherit;
+  font-size: clamp(1rem, 4.5vw, 1.125rem);
+  font-weight: 400;
+  line-height: 1.25;
+  text-align: center;
+  color: inherit;
+}
+
+.home-landing__scroll .strapi-blocks-view__heading {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-text);
+  font-style: normal;
+  font-weight: 700;
+  color: inherit;
+}
+
+.home-landing__scroll .strapi-blocks-view__list,
+.home-landing__scroll .strapi-blocks-view__quote {
+  margin: 0 0 0.65rem;
+  font-family: inherit;
+  font-weight: 400;
+  color: inherit;
+}
+
+.home-landing__scroll .strapi-blocks-view__paragraph {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-text);
+  font-weight: 400;
+  color: $swg-black;
+}
+
+.home-landing__scroll .strapi-blocks-view__paragraph strong {
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.home-landing__scroll .strapi-blocks-view__heading--h1 {
+  font-size: clamp(2.35rem, 12vw, 2.65rem);
+  line-height: 0.95;
+}
+
+.home-landing__scroll .strapi-blocks-view__heading--h2 {
+  font-size: clamp(1rem, 6.5vw, 1.25rem);
+  margin-bottom: 0rem;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.home-landing__scroll .strapi-blocks-view__heading--h3 {
+  font-size: clamp(1.1rem, 5vw, 1.25rem);
+}
+
+.home-landing__scroll .strapi-blocks-view__heading strong {
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.home-landing__scroll .strapi-blocks-view__figure {
+  margin: 0.75rem 0;
+}
+
+.home-landing__scroll .strapi-blocks-view__figure img {
+  display: block;
+  margin-inline: auto;
+  max-height: min(42vh, 20rem);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.home-landing__scroll .strapi-blocks-view__figure .cms-svg-image {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  max-height: min(42vh, 20rem);
+  margin-inline: auto;
+  line-height: 0;
+}
+
+.home-landing__scroll .strapi-blocks-view__figure .cms-svg-image > svg {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(42vh, 20rem);
+}
+
+.home-landing__footer {
+  flex-shrink: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.home-landing__continue {
+  color: $swg-white;
+  background-color: var(--swg-blue-dark);
+}

@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_component_imagelinks",
+  "info": {
+    "displayName": "imagelink",
+    "icon": "cast"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "link": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

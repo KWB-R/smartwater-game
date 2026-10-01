@@ -1,0 +1,13 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env*
+*.env
+!.env.example
+certs/
+src/assets/
+.unlighthouse/
+coverage/
+*.log
+.DS_Store
+Thumbs.db

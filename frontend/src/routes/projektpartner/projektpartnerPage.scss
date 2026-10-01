@@ -1,0 +1,129 @@
+/* Abstand oberhalb des Scrollbereichs verhindert, dass Inhalt unter Logo und Menü läuft. */
+.projektpartner-page {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--swg-bg);
+  /* Platz für das Logo einschließlich oberem Abstand reservieren. */
+  padding-top: calc(5.55rem + env(safe-area-inset-top, 0px));
+}
+
+.projektpartner-page__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+.projektpartner-page__article {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 34rem;
+}
+
+.projektpartner-page__section {
+  margin-bottom: 2.25rem;
+}
+
+.projektpartner-page__section:last-child {
+  margin-bottom: 0;
+}
+
+.projektpartner-page__heading {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-text);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--swg-black);
+}
+
+.projektpartner-page__blocks {
+  .strapi-blocks-view__heading:first-child {
+    margin-top: 0;
+  }
+
+  .strapi-blocks-view__heading--h1 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+}
+
+.projektpartner-page__logo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1.5rem;
+  margin: 0 0 0.5rem;
+  padding: 0.5rem 0.25rem;
+  list-style: none;
+}
+
+.projektpartner-page__logo-grid:last-child {
+  margin-bottom: 0;
+}
+
+.projektpartner-page__logo-grid {
+  &--stacked {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .projektpartner-page__logo-cell {
+    padding: 0rem;
+  }
+}
+
+.projektpartner-page__logo-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5rem;
+  padding: 0.75rem;
+}
+
+.projektpartner-page__logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.projektpartner-page__logo-img {
+  display: block;
+  max-width: 100%;
+  max-height: 4.75rem;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.projektpartner-page__blocks--funded {
+  .strapi-blocks-view__heading:first-child {
+    margin-top: 0;
+  }
+
+  .strapi-blocks-view__figure {
+    margin: 0.75rem 0;
+    padding: 0.75rem;
+  }
+
+  .strapi-blocks-view__figure img {
+    display: block;
+    max-width: 100%;
+    max-height: 4.5rem;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 0;
+  }
+
+  .strapi-blocks-view__paragraph {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+}

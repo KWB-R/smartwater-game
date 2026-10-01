@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_component_level_maskot_offsets",
+  "info": {
+    "displayName": "levelMaskotTransforms",
+    "icon": "alien"
+  },
+  "options": {},
+  "attributes": {
+    "preview": {
+      "type": "customField",
+      "customField": "global::level-name-preview",
+      "private": true
+    },
+    "level": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::level.level"
+    },
+    "offset": {
+      "type": "component",
+      "component": "math.vector2",
+      "repeatable": false,
+      "required": true
+    },
+    "scale": {
+      "type": "decimal",
+      "required": true,
+      "default": 1,
+      "min": 0
+    }
+  },
+  "config": {}
+}

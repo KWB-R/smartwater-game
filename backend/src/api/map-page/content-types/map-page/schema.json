@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "map_pages",
+  "info": {
+    "singularName": "map-page",
+    "pluralName": "map-pages",
+    "displayName": "MapPage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "content": {
+      "type": "blocks"
+    },
+    "usabilityContent": {
+      "type": "blocks"
+    },
+    "usabilityContentAfterWinning": {
+      "type": "blocks"
+    },
+    "winningContent": {
+      "type": "blocks"
+    }
+  }
+}

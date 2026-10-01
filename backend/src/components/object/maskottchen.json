@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_object_maskottchens",
+  "info": {
+    "displayName": "maskottchen",
+    "icon": "alien"
+  },
+  "options": {},
+  "attributes": {
+    "unhappy": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "happy": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "superhappy": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  },
+  "config": {}
+}

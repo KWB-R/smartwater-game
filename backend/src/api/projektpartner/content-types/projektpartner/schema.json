@@ -1,0 +1,34 @@
+{
+  "kind": "singleType",
+  "collectionName": "projektpartners",
+  "info": {
+    "singularName": "projektpartner",
+    "pluralName": "projektpartners",
+    "displayName": "Projektpartner"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "collaborateContent": {
+      "type": "blocks"
+    },
+    "collaborators": {
+      "type": "component",
+      "component": "component.imagelink",
+      "repeatable": true
+    },
+    "fundedByMedia": {
+      "type": "component",
+      "component": "component.imagelink",
+      "repeatable": true
+    },
+    "fundedByContent": {
+      "type": "blocks"
+    },
+    "fundeByTitle": {
+      "type": "text"
+    }
+  }
+}

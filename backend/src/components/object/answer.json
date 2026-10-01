@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_object_answers",
+  "info": {
+    "displayName": "Answer",
+    "icon": "bold"
+  },
+  "options": {},
+  "attributes": {
+    "preview": {
+      "type": "customField",
+      "customField": "global::blocks-preview",
+      "private": true
+    },
+    "content": {
+      "type": "blocks",
+      "required": true
+    },
+    "correctAnswer": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    }
+  },
+  "config": {}
+}

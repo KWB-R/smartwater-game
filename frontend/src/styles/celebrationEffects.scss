@@ -1,0 +1,40 @@
+/* Diagonale des Dialogs abdecken, damit beim Drehen keine weißen Ecken sichtbar werden. */
+.celebration-rays {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 0;
+  opacity: 0.5;
+  width: max(28rem, calc(100vw - 1rem));
+  height: max(28rem, calc(100vw - 1rem));
+  max-width: 36rem;
+  max-height: 36rem;
+  background: repeating-conic-gradient(
+    from 0deg,
+    #d4ecfb 0deg 10deg,
+    #ffffff 10deg 20deg
+  );
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  animation: celebration-rays-spin 28s linear infinite;
+  will-change: transform;
+}
+
+.celebration-rays--static {
+  animation: none;
+}
+
+@keyframes celebration-rays-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .celebration-rays:not(.celebration-rays--static) {
+    animation: none;
+  }
+}

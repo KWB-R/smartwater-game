@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "analytics_auth_placeholders",
+  "info": {
+    "singularName": "analytics-auth",
+    "pluralName": "analytics-auths",
+    "displayName": "Analytics Auth"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": false
+    },
+    "content-type-builder": {
+      "visible": false
+    }
+  },
+  "attributes": {
+    "placeholder": {
+      "type": "string",
+      "private": true
+    }
+  }
+}

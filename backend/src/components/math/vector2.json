@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_math_vector2s",
+  "info": {
+    "displayName": "vector2",
+    "icon": "code"
+  },
+  "options": {},
+  "attributes": {
+    "x": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "y": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,1717 @@
+/* Stile für Pixi-Szene, Sprites und Spielanimationen; das übrige Layout verwenden die React-Komponenten. */
+
+.level-board--drop-over {
+  outline: 3px solid var(--color-swg-blue-mid);
+  outline-offset: -2px;
+}
+
+.level-tile-strip::-webkit-scrollbar {
+  height: 6px;
+}
+
+.level-tile-strip::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.45);
+  border-radius: 3px;
+}
+
+.level-tile-strip::-webkit-scrollbar-track {
+  background: rgba(148, 163, 184, 0.15);
+  border-radius: 3px;
+}
+
+/* Beim Ziehen: nur Grafik, kein Karten-Hintergrund */
+.level-tile--floating {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  /* Die feste Box gibt die Größe vor; das Bild wird proportional eingepasst. */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+  box-sizing: border-box;
+  gap: 0;
+}
+
+.level-tile--floating .level-tile__visual {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.level-tile--floating:hover {
+  border: none;
+  box-shadow: none;
+}
+
+/* Beim Ziehen nur die zentrierte Vorschaugrafik zeigen. */
+.level-tile--cursor-drag .level-tile__visual .level-tile__label,
+.level-tile--cursor-drag .level-tile__visual .level-tile__debug-frame {
+  display: none;
+}
+
+/* Spritesheet-Raster: Position/Animation in TileSpriteVisual (requestAnimationFrame) */
+.level-tile-sprite {
+  flex-shrink: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+}
+
+/* TileSpriteVisual setzt Maße und Seitenverhältnis direkt; Vorschauen sind höchstens 100 Pixel groß. */
+.level-tile-sprite--in-strip {
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.level-tile-sprite--in-float {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+/* PlacedTilesOverlay stellt den Größencontainer für platzierte Teile bereit. */
+.level-placed-tile-slot {
+  container-type: size;
+}
+
+/**
+ * Beide Achsen proportional begrenzen.
+ * Nur max-width bei voller Höhe würde das Spritesheet-Raster verzerren.
+ */
+.level-placed-tile-slot .level-tile-sprite.level-tile-sprite--on-board {
+  width: min(
+    100cqw,
+    calc(100cqh * var(--level-sprite-fw, 1) / var(--level-sprite-fh, 1))
+  );
+  height: min(
+    100cqh,
+    calc(100cqw * var(--level-sprite-fh, 1) / var(--level-sprite-fw, 1))
+  );
+  max-width: none;
+  max-height: none;
+  flex-shrink: 0;
+}
+
+.level-tile-sprite--on-board {
+  /* Ersatzmaße, falls kein Größencontainer verfügbar ist. */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+/* Das gezogene Teil proportional in die Vorschau einpassen. */
+.level-tile--floating .level-tile__visual img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.level-tile__debug-frame {
+  font-size: 0.625rem;
+  font-weight: 800;
+  color: #15803d;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Die globale Schriftgröße für Buttons wird nach Tailwind geladen und muss hier übersteuert werden. */
+.level-tile__label {
+  font-size: 0.8rem;
+}
+
+.level-tile__strip-thumb-clip {
+  transform-origin: center center;
+  contain: layout paint;
+}
+
+.level-tile__strip-preview-burst-host .placement-particle-burst--embedded {
+  z-index: 5;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Mintfarbene Partikel vom Puzzleteil zum Missionsbalken; translate3d vermeidet aufwendige SVG-Filter. */
+.placement-particle-burst {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  /* Über Header und Balken rendern, damit Partikel bis in die Füllfläche fliegen können. */
+  z-index: 450;
+  overflow: visible;
+  contain: layout style;
+}
+
+.placement-particle-burst,
+.placement-particle-burst * {
+  pointer-events: none !important;
+}
+
+.placement-particle-burst__particle {
+  position: absolute;
+  pointer-events: none;
+  background-color: #00e5a0;
+  border-radius: 999px;
+  /* Filter und Schatten pro Partikel vermeiden, da sie die Animation verlangsamen. */
+  box-shadow: 0 0 0 1px rgba(0, 190, 140, 0.22);
+  animation-name: placement-particle-fly;
+  /* Standardflugbahn; die Animation überschreibt sie pro Partikel. */
+  animation-timing-function: cubic-bezier(0.45, 0, 1, 1);
+  animation-fill-mode: both;
+  /**
+   * Rotation als eigene CSS-Eigenschaft führen, damit sie unabhängig von der Fluganimation bleibt.
+   * Die Reihenfolge der Einzeltransformationen ist scale, rotate, translate.
+   */
+  rotate: var(--p-rot, 0deg);
+  translate: var(--p-ox, 0px) var(--p-oy, 0px);
+  scale: 1;
+  backface-visibility: hidden;
+}
+
+/* Die Partikelgeometrie stammt aus den direkt gesetzten Maßen. */
+.placement-particle-burst__particle--circle {
+  border-radius: 50%;
+}
+
+.placement-particle-burst__particle--short,
+.placement-particle-burst__particle--long {
+  border-radius: 999px;
+}
+
+.placement-particle-burst__particle--explosion {
+  animation-name: placement-particle-explode;
+  animation-timing-function: cubic-bezier(0.15, 0.85, 0.35, 1);
+}
+
+@keyframes placement-particle-explode {
+  0% {
+    translate: var(--p-ox, 0px) var(--p-oy, 0px);
+    scale: 0.2;
+    opacity: 1;
+  }
+  45% {
+    translate: calc(var(--burst-dx) * 0.72) calc(var(--burst-dy) * 0.72);
+    scale: 1.05;
+    opacity: 1;
+  }
+  100% {
+    translate: var(--burst-dx) var(--burst-dy);
+    scale: 0.1;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .placement-particle-burst__particle--explosion {
+    animation-duration: 0.28s !important;
+    animation-delay: 0ms !important;
+  }
+}
+
+/* Explosion hinter Bonus-/Kombi-Overlays (relativ zum Panel-Zentrum) */
+.placement-particle-burst--embedded {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  z-index: 0;
+  inset: auto;
+  contain: none;
+}
+
+.placement-particle-burst--celebration
+  .placement-particle-burst__particle--explosion {
+  animation-timing-function: cubic-bezier(0.12, 0.72, 0.22, 1);
+}
+
+/* Gelb/lila Konfetti-Burst (Rechtecke + Kreise; finite = einmaliger Burst) */
+.level-win-confetti-rain {
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-header-crown--pulse .mission-header-crown__icon {
+  animation: mission-header-crown-pulse 2.4s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes mission-header-crown-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.14);
+  }
+}
+
+.mission-header-mascot--enter {
+  transform-origin: center bottom;
+  animation: mission-header-mascot-enter 0.62s cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+@keyframes mission-header-mascot-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-115%) scale(1.15);
+  }
+  72% {
+    opacity: 1;
+    transform: translateY(4%) scale(1.13);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1.05);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mission-header-mascot--enter {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mission-header-crown--pulse .mission-header-crown__icon {
+    animation: none;
+  }
+}
+
+.level-win-confetti-rain--finite .level-win-confetti-rain__particle {
+  animation-iteration-count: 1;
+  /* Burst: leicht beschleunigter Fall */
+  animation-timing-function: cubic-bezier(0.28, 0.08, 0.72, 1);
+}
+
+.level-win-confetti-rain__particle--cancelled {
+  animation: none !important;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.level-win-confetti-rain__particle {
+  position: absolute;
+  top: -14%;
+  background-color: var(--cf-color, var(--color-swg-yellow));
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+  animation-name: level-win-confetti-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: var(--cf-delay, 0s);
+  animation-duration: var(--cf-duration, 2.4s);
+  transform: translate3d(0, 0, 0) rotate(var(--cf-rot, 0deg));
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.level-win-confetti-rain__particle--circle {
+  border-radius: 50%;
+}
+
+@keyframes level-win-confetti-fall {
+  0% {
+    transform: translate3d(0, -8vh, 0) rotate(var(--cf-rot, 0deg));
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--cf-drift, 0px), 112vh, 0)
+      rotate(calc(var(--cf-rot, 0deg) + 420deg));
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-win-confetti-rain__particle {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Kroneneffekt nach einer richtigen Quizantwort. */
+.quiz-crown-overlay {
+  transform-origin: center center;
+  box-shadow: 0 12px 40px rgb(15 23 42 / 0.22);
+  animation: combo-unlock-dialog-enter 0.5s cubic-bezier(0.34, 1.42, 0.64, 1)
+    both;
+}
+
+.quiz-crown-overlay--instant {
+  animation: none;
+}
+
+.quiz-crown-overlay__rays {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.quiz-crown-overlay .celebration-rays {
+  width: max(200%, 24rem);
+  height: max(200%, 24rem);
+  max-width: none;
+  max-height: none;
+  opacity: 0.52;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgb(212 236 251 / 0.9) 0deg 10deg,
+    rgb(255 255 255 / 0.35) 10deg 20deg
+  );
+}
+
+.quiz-crown-overlay__crown {
+  transform: rotate(-11deg);
+  transform-origin: center center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-crown-overlay:not(.quiz-crown-overlay--instant) {
+    animation: combo-unlock-dialog-enter-reduced 0.22s ease-out both;
+  }
+}
+
+/* Rotierende Strahlen im Kombidialog. */
+.combo-unlock-dialog {
+  /* Das Abzeichen darf über den Panelrand hinausragen. */
+  overflow: visible;
+}
+
+/** Partikeleffekt mittig über den Puzzlemedien, relativ zur Vorschau positioniert. */
+.combo-unlock-dialog__burst-host > .placement-particle-burst {
+  position: absolute;
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  overflow: visible;
+}
+
+.combo-unlock-dialog__panel {
+  overflow: hidden;
+  transform-origin: center center;
+  /* Schatten statt CSS-Rahmen verwenden, um einen hellen Rand durch Kantenglättung zu vermeiden. */
+  border: 0;
+  box-shadow:
+    0 0 0 3px var(--swg-black, #000),
+    0 12px 40px rgb(15 23 42 / 0.22);
+  animation: combo-unlock-dialog-enter 0.5s cubic-bezier(0.34, 1.42, 0.64, 1)
+    both;
+}
+
+.combo-unlock-dialog__panel--instant {
+  animation: none;
+}
+
+.combo-unlock-dialog__rays {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.combo-unlock-dialog .celebration-rays {
+  /* Feste Größe, damit die Strahlen bis in die Ecken des Dialogs reichen. */
+  width: 48rem;
+  height: 48rem;
+  max-width: none;
+  max-height: none;
+  opacity: 0.52;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgb(212 236 251 / 0.9) 0deg 10deg,
+    rgb(255 255 255 / 0.35) 10deg 20deg
+  );
+}
+
+@keyframes combo-unlock-dialog-enter {
+  0% {
+    opacity: 0;
+    transform: scale(0.78);
+  }
+  52% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  76% {
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .combo-unlock-dialog__panel:not(.combo-unlock-dialog__panel--instant) {
+    animation: combo-unlock-dialog-enter-reduced 0.22s ease-out both;
+  }
+}
+
+@keyframes combo-unlock-dialog-enter-reduced {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.combo-unlock-dialog__hero {
+  isolation: isolate;
+}
+
+.combo-unlock-dialog__preview {
+  overflow: visible;
+}
+
+@keyframes level-library-intro-fly-in {
+  0% {
+    opacity: 0;
+    transform: translate3d(28px, -42px, 0) scale(0.55) rotate(-6deg);
+  }
+  58% {
+    opacity: 1;
+    transform: translate3d(-4px, 6px, 0) scale(1.06) rotate(2deg);
+  }
+  82% {
+    transform: translate3d(0, -2px, 0) scale(0.98) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes level-library-intro-fly-in-reduced {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.level-drop-target-hints {
+  opacity: 0;
+  transition: opacity 0.56s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+.level-drop-target-hints img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+.level-drop-target-hints--sockets-visible {
+  opacity: 1;
+}
+
+.level-drop-target-hints--reduced-motion {
+  transition: none;
+}
+
+.level-tile-strip-item--library-intro-enter {
+  transform-origin: center bottom;
+}
+
+.level-tile__drag-thumb--library-intro-enter {
+  transform-origin: center center;
+  opacity: 1;
+  animation: level-library-intro-fly-in 0.56s cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-tile__drag-thumb--library-intro-enter {
+    animation: level-library-intro-fly-in-reduced 0.22s ease-out both;
+  }
+}
+
+.level-tile__drag-thumb--combo-reveal-enter {
+  transform-origin: center center;
+  animation: combo-unlock-dialog-enter 0.5s cubic-bezier(0.34, 1.42, 0.64, 1)
+    both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-tile__drag-thumb--combo-reveal-enter {
+    animation: combo-unlock-dialog-enter-reduced 0.22s ease-out both;
+  }
+}
+
+@keyframes placement-particle-fly {
+  /* Parallel anfliegen und über die CSS-Eigenschaft rotate ausrichten. */
+  0% {
+    translate: var(--p-ox, 0px) var(--p-oy, 0px);
+    scale: 1;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.45, 0, 1, 1);
+  }
+  72% {
+    translate: calc(var(--burst-dx) * 0.78 + var(--p-ox, 0px))
+      calc(var(--burst-dy) * 0.78 + var(--p-oy, 0px));
+    scale: 1;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+  }
+  92% {
+    translate: calc(var(--burst-dx) + var(--p-ex, 0px))
+      calc(var(--burst-dy) + var(--p-ey, 0px));
+    scale: 0.7;
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    translate: calc(var(--burst-dx) + var(--p-ex, 0px))
+      calc(var(--burst-dy) + var(--p-ey, 0px));
+    scale: 0.12;
+    opacity: 0;
+  }
+}
+
+/* Bei der Landung im neuen Balkenabschnitt abflachen. */
+.placement-particle-burst--fill-absorb .placement-particle-burst__particle {
+  animation-name: placement-particle-fill;
+}
+
+@keyframes placement-particle-fill {
+  0% {
+    translate: var(--p-ox, 0px) var(--p-oy, 0px);
+    scale: 1 1;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.85, 0.35);
+  }
+  62% {
+    translate: calc(var(--burst-dx) * 0.7 + var(--p-ox, 0px) * 0.55)
+      calc(var(--burst-dy) * 0.7 + var(--p-oy, 0px) * 0.55);
+    scale: 0.95 0.95;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.15, 0.75, 0.25, 1);
+  }
+  82% {
+    /* Im Balken schrumpfen, damit die Kapseln nicht über den Rand hinausragen. */
+    translate: calc(var(--burst-dx) + var(--p-ex, 0px))
+      calc(var(--burst-dy) + var(--p-ey, 0px));
+    scale: 0.75 0.4;
+    opacity: 1;
+    animation-timing-function: ease-out;
+  }
+  100% {
+    translate: calc(var(--burst-dx) + var(--p-ex, 0px))
+      calc(var(--burst-dy) + var(--p-ey, 0px));
+    scale: 0.95 0.08;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .placement-particle-burst__particle {
+    animation-name: placement-particle-fly-reduced;
+    animation-timing-function: cubic-bezier(0.45, 0, 1, 1);
+    animation-duration: 0.35s !important;
+    animation-delay: 0ms !important;
+  }
+
+  .placement-particle-burst--fill-absorb .placement-particle-burst__particle {
+    animation-name: placement-particle-fill-reduced;
+  }
+
+  @keyframes placement-particle-fly-reduced {
+    0% {
+      translate: var(--p-ox, 0px) var(--p-oy, 0px);
+      scale: 1;
+      opacity: 1;
+      animation-timing-function: cubic-bezier(0.45, 0, 1, 1);
+    }
+    55% {
+      translate: calc(var(--burst-dx) * 0.7 + var(--p-ox, 0px))
+        calc(var(--burst-dy) * 0.7 + var(--p-oy, 0px));
+      scale: 1;
+      opacity: 1;
+      animation-timing-function: ease-out;
+    }
+    100% {
+      translate: calc(var(--burst-dx) + var(--p-ex, 0px))
+        calc(var(--burst-dy) + var(--p-ey, 0px));
+      scale: 0.2;
+      opacity: 0;
+    }
+  }
+
+  @keyframes placement-particle-fill-reduced {
+    0% {
+      translate: var(--p-ox, 0px) var(--p-oy, 0px);
+      scale: 1 1;
+      opacity: 1;
+    }
+    100% {
+      translate: calc(var(--burst-dx) + var(--p-ex, 0px))
+        calc(var(--burst-dy) + var(--p-ey, 0px));
+      scale: 1.3 0.2;
+      opacity: 0;
+    }
+  }
+}
+
+/* Pixi-Szene. */
+
+/* Pixi hinter den Overlays positionieren; Containerabfragen richten beide am selben Designrahmen aus. */
+.level-scene {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  min-height: 0;
+  container-type: size;
+  container-name: level-scene;
+  isolation: isolate;
+}
+
+.level-play {
+  --level-mission-header-bar-height: 120px;
+  --level-mission-header-height: calc(
+    var(--level-mission-header-bar-height) + env(safe-area-inset-top, 0px)
+  );
+  --level-tile-dock-bar-height: 170px;
+  --level-tile-dock-compact-bar-height: 75px;
+  /* Inhaltshöhe und Safe-Area-Abstand einmal im Grid berücksichtigen. */
+  --level-tile-dock-outer-height: calc(
+    var(--level-tile-dock-bar-height) + env(safe-area-inset-bottom, 0px)
+  );
+  --level-tile-dock-compact-outer-height: calc(
+    var(--level-tile-dock-compact-bar-height) + env(safe-area-inset-bottom, 0px)
+  );
+  --level-library-puzzle-badge-bottom: calc(
+    var(--level-tile-dock-outer-height) + 0.5rem
+  );
+  box-sizing: border-box;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.level-play__main {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow: hidden;
+}
+
+.level-play--with-header .level-play__main {
+  max-height: calc(100% - var(--level-mission-header-height, 120px));
+}
+
+.level-game.level-play__game {
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+}
+
+.level-game:not(.level-game--dock-compact) .level-play__body-row {
+  height: 100%;
+  min-height: 0;
+}
+
+.level-game--dock-compact {
+  --level-tile-dock-height: var(--level-tile-dock-compact-outer-height);
+  --level-library-puzzle-badge-bottom: var(
+    --level-tile-dock-compact-outer-height
+  );
+}
+
+.level-play__header-slot > header {
+  box-sizing: border-box;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+}
+
+/* Das Brett füllt die freie Höhe; die Ablage erhält mindestens 150 Pixel zuzüglich Safe Area. */
+.level-game:not(.level-game--dock-compact) .level-scene {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
+  overflow: hidden;
+  container-type: size;
+  container-name: level-scene;
+}
+
+.level-game:not(.level-game--dock-compact) .level-scene::before {
+  display: none;
+}
+
+.level-game:not(.level-game--dock-compact) .level-board-wrap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  flex: none;
+  height: 100%;
+  width: calc(100cqh * 2048 / 2048);
+  max-height: 100%;
+  min-height: 0;
+}
+
+.level-game:not(.level-game--dock-compact) .level-board-host {
+  position: absolute;
+  inset: 0;
+  flex: none;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.level-game:not(.level-game--dock-compact) .level-design-frame {
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  aspect-ratio: auto;
+  transform: none;
+}
+
+.level-game:not(.level-game--dock-compact) .level-tile-dock {
+  box-sizing: content-box;
+  flex: 0 0 auto;
+  height: var(--level-tile-dock-bar-height);
+  min-height: var(--level-tile-dock-bar-height);
+  max-height: none;
+  overflow: hidden;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background-color: var(--swg-bg);
+}
+
+.level-game:not(.level-game--dock-compact) .level-tile-dock > section {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  max-height: 100%;
+}
+
+.level-game--dock-share .level-tile-dock {
+  animation: level-share-dock-enter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes level-share-dock-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-game--dock-share .level-tile-dock {
+    animation: none;
+  }
+}
+
+/* Auf der Teilen-Seite füllt das Brett die freie Höhe über dem vollständig sichtbaren Footer. */
+.level-game--dock-share .level-play__body-row {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.level-game--dock-share .level-scene {
+  flex: 1 1 0%;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.level-scene--share-combo-video .level-scene__letterbox-bg {
+  visibility: hidden;
+}
+
+.level-scene--share-combo-video .level-board-wrap {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.level-scene--share-combo-video .level-scene__share-combo-video {
+  z-index: 10;
+}
+
+/* Das Brett füllt den Bereich über dem Footer; überstehende Ränder werden abgeschnitten. */
+.level-game--dock-share .level-scene .level-board-wrap {
+  position: absolute;
+  inset: 0;
+  left: 0;
+  top: 0;
+  transform: none;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+.level-game--dock-share .level-scene .level-scene__letterbox-bg {
+  background-size: cover;
+  background-position: center;
+  filter: blur(22px) saturate(1.05);
+  transform: scale(1.08);
+}
+
+.level-game--dock-share.level-game:not(.level-game--dock-compact)
+  .level-tile-dock {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  align-self: stretch;
+}
+
+.level-game--dock-share .level-tile-dock > section {
+  display: block;
+  flex: 0 0 auto;
+  height: auto;
+  max-height: none;
+  min-height: 0;
+  overflow: visible;
+}
+
+@media (orientation: landscape) {
+  .level-game--dock-share .level-play__body-row {
+    flex-direction: column;
+  }
+
+  .level-game--dock-share .level-tile-dock {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.level-game--dock-compact .level-scene {
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  align-self: stretch;
+}
+
+.level-game--dock-compact .level-tile-dock {
+  box-sizing: content-box;
+  height: var(--level-tile-dock-compact-bar-height);
+  min-height: var(--level-tile-dock-compact-bar-height);
+  max-height: none;
+  overflow: hidden;
+  padding: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+  background-color: var(--swg-bg);
+}
+
+@media (orientation: landscape) {
+  .level-game:not(.level-game--dock-compact) .level-tile-dock {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .level-game--dock-compact .level-tile-dock {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.level-game--dock-compact .level-tile-dock > section {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.level-game--dock-compact .level-tile-dock-inner {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* Die Puzzleteilbibliothek scrollt ausschließlich horizontal. */
+.level-game:not(.level-game--dock-compact) .level-tile-dock-inner {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.level-game .level-tile-dock-inner .level-tile-strip {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow-x: scroll;
+  overflow-y: clip;
+  scrollbar-gutter: stable;
+  align-items: stretch;
+}
+
+.level-game .level-tile-dock-inner .level-tile-strip--empty {
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+/* Der Puzzlezähler überlappt die Grenze zwischen Brett und Bibliothek. */
+.level-library-puzzle-badge-overlay {
+  --library-badge-dodge-duration: 0.22s;
+  pointer-events: none;
+  position: absolute;
+  z-index: 55;
+  inset: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.75rem 0.75rem;
+  top: initial;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.level-library-puzzle-badge-overlay--tutorial-tile-cards {
+  z-index: 90;
+}
+
+.level-library-puzzle-badge-overlay--reduced-motion {
+  --library-badge-dodge-duration: 0s;
+}
+
+/* Feste Prüfbereiche beibehalten; nur die sichtbaren Bedienelemente verschieben. */
+.level-library-puzzle-badge-overlay__slot {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+
+  &--left {
+    align-self: flex-end;
+
+  }
+}
+
+.level-library-puzzle-badge-overlay__slot--center {
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.level-library-puzzle-badge-overlay__ai-label-hit {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.level-library-puzzle-badge-overlay__ai-label {
+  --ai-label-rest-y: -10px;
+  --ai-label-dodge-y: 0px;
+  display: block;
+  height: 1.125rem;
+  width: auto;
+  max-width: 60px;
+  object-fit: contain;
+  user-select: none;
+  transform: translateY(calc(var(--ai-label-rest-y) + var(--ai-label-dodge-y)));
+  transition: transform var(--library-badge-dodge-duration) ease;
+  will-change: transform;
+}
+
+.level-library-puzzle-badge-overlay__ai-label--dodge {
+  --ai-label-dodge-y: calc(100% + 1.25rem);
+}
+
+.level-library-puzzle-badge-overlay__badge {
+  --badge-dodge-x: 0px;
+  transform: translateX(var(--badge-dodge-x));
+  transition: transform var(--library-badge-dodge-duration) ease;
+  will-change: transform;
+}
+
+.level-library-puzzle-badge-overlay__badge--dodge {
+  --badge-dodge-x: calc(-100% - 1.25rem);
+}
+
+.level-library-tile-cards-button {
+  --tile-cards-button-scale: 1.25;
+  --tile-cards-dodge-x: 0%;
+  display: flex;
+  min-height: 3.5rem;
+  min-width: 3.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 50%;
+  transform: scale(var(--tile-cards-button-scale))
+    translate(calc(-15% + var(--tile-cards-dodge-x)), -10%);
+  background: var(--swg-green-light);
+  padding: 0.25rem;
+  cursor: pointer;
+  transition:
+    box-shadow 0.15s ease,
+    transform var(--library-badge-dodge-duration) ease;
+  will-change: transform;
+
+  &--dodge {
+    --tile-cards-dodge-x: calc(100% + 1.5rem);
+  }
+
+  /* Der Klon übernimmt das bereits skalierte Bildschirmrechteck und benötigt keine weitere Transformation. */
+  &--tutorial-clone {
+    transform: none;
+
+    .level-library-tile-cards-button__icon {
+      width: calc(35px * var(--tile-cards-button-scale));
+    }
+  }
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 2px 8px rgb(14 165 233 / 0.22);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgb(14 165 233);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    .level-library-tile-cards-button__icon {
+      opacity: 0.45;
+    }
+  }
+}
+
+.level-library-tile-cards-button__icon {
+  display: block;
+  width: 35px;
+  height: auto;
+}
+
+.level-game--dock-share .level-library-puzzle-badge-overlay {
+  display: none;
+}
+
+.level-scene__letterbox-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(22px) saturate(1.05);
+  transform: scale(1.08);
+  transform-origin: center;
+}
+
+.level-scene--intro .level-scene__letterbox-bg {
+  opacity: 0.58;
+  filter: blur(6px) saturate(1.05);
+  border-radius: 0;
+}
+
+.level-scene--intro {
+  border-radius: 0;
+}
+
+/* Das Brett bleibt hinter dem Missions-Sheet leicht sichtbar. */
+.level-scene--mission-sheet .level-scene__letterbox-bg {
+  opacity: 1;
+  filter: none;
+}
+
+.level-scene--mission-sheet .level-board-wrap {
+  opacity: 0.88;
+  filter: blur(5px) saturate(1.02);
+  pointer-events: none;
+}
+
+.level-game .level-scene .level-board-wrap {
+  transition:
+    opacity 0.48s ease-out,
+    filter 0.48s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-game .level-scene .level-board-wrap {
+    transition:
+      opacity 0.2s ease-out,
+      filter 0.2s ease-out;
+  }
+
+  .level-before-after-gate__compare-layer {
+    transition: opacity 0.2s ease-out;
+  }
+}
+
+/* Während Quiz und Vergleich das gelegte Brett sichtbar halten und leicht weichzeichnen. */
+.level-scene--pre-quiz .level-board-wrap,
+.level-scene--winning .level-board-wrap {
+  opacity: 0.8;
+  filter: blur(6px) saturate(1.05);
+  pointer-events: none;
+}
+
+/* Bei einem gescheiterten Puzzle auch die Bibliothek weichzeichnen. */
+.level-scene--puzzle-failed ~ .level-tile-dock {
+  opacity: 0.8;
+  filter: blur(6px) saturate(1.05);
+  pointer-events: none;
+  transition:
+    opacity 0.48s ease-out,
+    filter 0.48s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-scene--puzzle-failed ~ .level-tile-dock {
+    transition:
+      opacity 0.2s ease-out,
+      filter 0.2s ease-out;
+  }
+}
+
+.level-before-after-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
+  /* Das fertige Puzzle bleibt sichtbar, solange der Vergleich noch lädt. */
+  background: transparent;
+
+  &__scene {
+    position: absolute;
+    inset: 0;
+    /* Dieselbe Unterkante wie das Spielbrett über der Bibliothek verwenden. */
+    bottom: var(--level-tile-dock-outer-height);
+    min-height: 0;
+    overflow: hidden;
+    container-type: size;
+    container-name: level-scene;
+    /* Die Nachher-Seite nutzt das vorhandene Puzzle als durchscheinende Basis. */
+    background: transparent;
+  }
+
+  &__board-frame {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    height: 100%;
+    width: calc(100cqh * 2048 / 2048);
+    max-height: 100%;
+    min-height: 0;
+    overflow: hidden;
+    transform: translateX(-50%);
+
+    /* Bezugsfläche für Konfetti und andere absolut positionierte Elemente. */
+    isolation: isolate;
+  }
+
+  &__compare-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+
+    &--visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    &--preload {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+
+  &__board-frame .gallery-ba {
+    height: 100%;
+    min-height: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  &__board-frame .gallery-ba-img,
+  &__board-frame .gallery-detail-after-img {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Der Vergleich ist so breit wie das Brett; Beschriftungen bleiben im sichtbaren Ausschnitt. */
+  &__board-frame .gallery-ba-compare-labels {
+    --gallery-compare-label-visible-inset: max(0px, calc((100% - 100cqw) / 2));
+  }
+
+  &__board-frame .gallery-ba-compare-labels-before {
+    padding-left: calc(
+      1rem + 10px + var(--gallery-compare-label-visible-inset)
+    );
+  }
+
+  &__board-frame .gallery-ba-compare-labels-after {
+    padding-right: calc(
+      1rem + 10px + var(--gallery-compare-label-visible-inset)
+    );
+  }
+
+  /* Die Ablagehöhe beibehalten, damit das Brett beim Übergang zum Vergleich seine Größe behält. */
+  &__footer {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 20;
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: var(--level-tile-dock-bar-height);
+    min-height: var(--level-tile-dock-bar-height);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    .strapi-blocks-view__heading {
+      margin-top: 0;
+    }
+  }
+
+  &__media {
+    display: flex;
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+    flex-direction: column;
+  }
+
+  &__slider {
+    min-height: 0;
+    flex: 1 1 auto;
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+
+    &.gallery-ba {
+      height: 100%;
+      min-height: 0;
+      flex: 1 1 auto;
+    }
+  }
+
+  /* Schaltflächen im Footer etwas kleiner darstellen. */
+  &__footer :is(button, a) {
+    font-size: 1.1rem;
+  }
+}
+
+@media (orientation: landscape) {
+  .level-before-after-gate__footer {
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .level-before-after-gate__scene {
+    bottom: calc(
+      var(--level-tile-dock-bar-height) + 0.75rem +
+        env(safe-area-inset-bottom, 0px)
+    );
+  }
+}
+
+.level-cms-board-overlay--soft-enter .level-cms-board-overlay__mascot,
+.level-cms-board-overlay--soft-enter .level-cms-board-overlay__panel {
+  opacity: 0;
+}
+
+.level-cms-board-overlay--soft-enter:not(.level-cms-board-overlay--instant)
+  .level-cms-board-overlay__mascot {
+  animation: level-cms-board-overlay-enter 0.52s cubic-bezier(0.22, 1, 0.36, 1)
+    0.08s both;
+}
+
+.level-cms-board-overlay--soft-enter:not(.level-cms-board-overlay--instant)
+  .level-cms-board-overlay__panel {
+  animation: level-cms-board-overlay-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1)
+    0.2s both;
+}
+
+.level-cms-board-overlay--soft-enter.level-cms-board-overlay--instant
+  .level-cms-board-overlay__mascot,
+.level-cms-board-overlay--soft-enter.level-cms-board-overlay--instant
+  .level-cms-board-overlay__panel {
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes level-cms-board-overlay-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-cms-board-overlay--soft-enter:not(.level-cms-board-overlay--instant)
+    .level-cms-board-overlay__mascot,
+  .level-cms-board-overlay--soft-enter:not(.level-cms-board-overlay--instant)
+    .level-cms-board-overlay__panel {
+    animation: level-cms-board-overlay-enter-reduced 0.22s ease-out both;
+    animation-delay: 0s;
+  }
+}
+
+@keyframes level-cms-board-overlay-enter-reduced {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.level-tile-dock-action-overlay--enter {
+  opacity: 0;
+  animation: level-tile-dock-action-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1)
+    0.28s both;
+}
+
+.level-tile-dock-action-overlay--enter.level-tile-dock-action-overlay--instant {
+  opacity: 1;
+  animation: none;
+}
+
+@keyframes level-tile-dock-action-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .level-tile-dock-action-overlay--enter:not(
+    .level-tile-dock-action-overlay--instant
+  ) {
+    animation: level-cms-board-overlay-enter-reduced 0.2s ease-out 0.05s both;
+  }
+}
+
+.level-scene--intro .level-pixi-root {
+  visibility: hidden;
+}
+
+.level-design-frame {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  aspect-ratio: 800 / 600;
+  width: min(100cqw, calc(100cqh * 800 / 600));
+  height: min(100cqh, calc(100cqw * 600 / 800));
+  pointer-events: none;
+  z-index: 1;
+  /* Video-Overlays als Geschwister von Pixi, nicht im Canvas-Container */
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.level-board-wrap {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.level-board-host {
+  position: relative;
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  background: transparent;
+  pointer-events: none;
+}
+
+.level-pixi-root {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+  z-index: 0;
+}
+
+.level-pixi-root.level-pixi-root--in-design-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  flex: none;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.level-pixi-root.level-pixi-root--fill-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  flex: none;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.demo2-scene__tap-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 0.35rem 0.5rem;
+  background: rgba(12, 10, 9, 0.82);
+  color: #e7e5e4;
+  box-sizing: border-box;
+}
+
+.level-board-host canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  background: transparent !important;
+}
+
+.level-end-animation-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.level-placement-video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+  background: transparent;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+/* Gezogenes Puzzleteil — viewport-fixed, sichtbar über Library und Brett */
+.level-board-drag-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.level-board-drag-overlay__piece {
+  --level-board-drag-lift-y: 65px;
+  position: fixed;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.level-board-drag-overlay__piece--lifted {
+  transform: translate(-50%, calc(-50% - var(--level-board-drag-lift-y)));
+}
+
+.level-board-drag-overlay__piece img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.level-board-drag-overlay__sprite {
+  flex-shrink: 0;
+  max-width: 100%;
+  max-height: 100%;
+  pointer-events: none;
+}
+
+.level-placement-video-overlay__clip {
+  position: absolute;
+  overflow: hidden;
+  background: transparent;
+}
+
+.level-placement-video-overlay__video-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.level-placement-video-overlay__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: top left;
+  background: transparent;
+  mix-blend-mode: normal;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+/* Native Bildauswahl in Safari während des Ziehens verhindern. */
+.level-drag-select-lock,
+.level-drag-select-lock * {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+}
+
+/* Quadratisches Brett mit voller Puzzlehöhe; den Hintergrund setzt level-scene__letterbox-bg. */
+.level-game--dock-compact .level-design-frame {
+  top: 0;
+  height: 100%;
+  width: calc(100cqh * 2048 / 2048);
+  max-height: 100%;
+  aspect-ratio: auto;
+  overflow: hidden;
+}
+
+/* Das Fehlerpanel wie den Vergleich am Designrahmen über der Ablage zentrieren. */
+.level-puzzle-failed-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
+
+  &__scene {
+    position: absolute;
+    inset: 0;
+    bottom: var(--level-tile-dock-outer-height);
+    min-height: 0;
+    overflow: hidden;
+    container-type: size;
+    container-name: level-scene;
+  }
+
+  &__board-frame {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    display: flex;
+    height: 100%;
+    width: calc(100cqh * 2048 / 2048);
+    max-height: 100%;
+    min-height: 0;
+    transform: translateX(-50%);
+  }
+}
+
+.level-puzzle-failed-panel {
+  width: min(100%, 80dvw, 400px);
+  max-width: min(80dvw, 400px);
+  border-radius: 0.65rem;
+  border: 2px solid var(--swg-black, #000);
+  background: #fff;
+  box-shadow: 0 12px 40px rgb(15 23 42 / 0.28);
+}

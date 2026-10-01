@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "analytics_counters",
+  "info": {
+    "singularName": "analytics-counter",
+    "pluralName": "analytics-counters",
+    "displayName": "Analytics Counter"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "metric": {
+      "type": "enumeration",
+      "enum": [
+        "unique_visit",
+        "session_start",
+        "level_start",
+        "quiz_answer",
+        "all_levels_complete"
+      ],
+      "required": true
+    },
+    "day": {
+      "type": "date",
+      "required": true
+    },
+    "levelSlug": {
+      "type": "string"
+    },
+    "answerIndex": {
+      "type": "integer",
+      "min": 0
+    },
+    "isCorrect": {
+      "type": "boolean"
+    },
+    "count": {
+      "type": "integer",
+      "required": true,
+      "default": 0,
+      "min": 0
+    }
+  }
+}

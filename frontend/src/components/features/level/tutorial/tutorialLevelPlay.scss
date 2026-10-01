@@ -1,0 +1,97 @@
+.tutorial-speech-bubble {
+  position: relative;
+}
+
+.tutorial-speech-bubble__pointer {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.tutorial-speech-bubble__pointer--top {
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 20px 24px;
+  border-color: transparent transparent #000;
+}
+
+.tutorial-speech-bubble__pointer--top::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: -17px;
+  border-width: 0 17px 20px;
+  border-style: solid;
+  border-color: transparent transparent #fff;
+}
+
+.tutorial-speech-bubble__pointer--bottom {
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-58%);
+  border-width: 24px 20px 0;
+  border-color: #000 transparent transparent;
+}
+
+.tutorial-speech-bubble__pointer--bottom::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: -17px;
+  border-width: 20px 17px 0;
+  border-style: solid;
+  border-color: #fff transparent transparent;
+}
+
+.tutorial-speech-bubble {
+  button {
+    margin-top: 1rem;
+  }
+}
+
+.tutorial-step-layer {
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.tutorial-step-layer--visible {
+  opacity: 1;
+}
+
+.tutorial-spotlight-ring {
+  box-sizing: border-box;
+  border: 3px solid var(--color-swg-green);
+  border-radius: 2rem;
+  box-shadow: none;
+  outline: none;
+}
+
+.tutorial-spotlight-ring--pulse {
+  animation: tutorial-spotlight-ring-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes tutorial-spotlight-ring-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tutorial-step-layer {
+    transition: none;
+    opacity: 1;
+  }
+
+  .tutorial-spotlight-ring--pulse {
+    animation: none;
+    opacity: 1;
+  }
+}
