@@ -1,6 +1,6 @@
 # SmartWater
 
-Anwendungscode für das Lernspiel **Schwammtastisch**: React-/TypeScript-Frontend und Strapi-CMS in einem Repository.
+Anwendungscode für das Spiel **Schwammtastisch**: React-/TypeScript-Frontend und Strapi-CMS in einem Repository.
 
 ## Lokal starten
 
@@ -14,9 +14,13 @@ Das Frontend ist unter `http://localhost:5173`, die CMS-Verwaltung unter `http:/
 
 ## Lieferumfang
 
-Enthalten sind Anwendungscode, CMS-Schemas, Typen, Tests sowie Grafiken, Sounds und Schriften der Oberfläche. Die Spielinhalte aus `frontend/src/assets/`, deren Level-Konfigurationen, CMS-Datenbankinhalte, hochgeladene CMS-Medien und Kombi-Share-Videos werden separat bereitgestellt und sind hier nicht enthalten. Dieser Checkout allein enthält daher **keine vollständig spielbare Installation**.
+Das Repository enthält die technische Architektur und den Anwendungscode des Spiels einschließlich Frontend, Strapi-CMS, CMS-Schemas, Typen, Tests sowie allgemeiner Ressourcen der Benutzeroberfläche.
 
-Der Code kann ohne die separaten Level-Assets gebaut und getestet werden. Ohne CMS-Konfiguration und Inhalte erscheinen leere Zustände oder Ersatzansichten; die Level-Konfiguration fällt auf eine leere Konfiguration zurück. Eigene Inhalte müssen separat eingepflegt werden.
+Nicht enthalten sind die für die Ausführung des Spiels für die Berliner Regenwasseragentur / das Kompetenzzentrum Wasser Berlin erstellten Inhalte und Medien. Dazu gehören insbesondere Grafiken, Bilder, Videos und Sounds der Spiellevel, die zugehörigen Level-Konfigurationen, CMS-Datenbankinhalte, hochgeladene CMS-Medien sowie Kombi-Share-Videos. Diese werden separat bereitgestellt.
+
+Der Checkout bildet damit die technische Grundlage und Architektur des Spiels, enthält jedoch nicht die vollständig befüllte Ausführung für die Berliner Regenwasseragentur / KWB.
+
+Der Code kann auch ohne diese Inhalte gebaut und getestet werden. Ohne CMS-Konfiguration und Inhalte erscheinen leere Zustände oder Ersatzansichten; die Level-Konfiguration fällt auf eine leere Konfiguration zurück. Eigene Inhalte können separat eingepflegt werden.
 
 ## Dokumentation
 
