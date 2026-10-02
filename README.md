@@ -16,7 +16,7 @@ Das Frontend ist unter `http://localhost:5173`, die CMS-Verwaltung unter `http:/
 
 Das Repository enthält die technische Architektur und den Anwendungscode des Spiels einschließlich Frontend, Strapi-CMS, CMS-Schemas, Typen, Tests sowie allgemeiner Ressourcen der Benutzeroberfläche.
 
-Nicht enthalten sind die für die Ausführung des Spiels für die Berliner Regenwasseragentur / das Kompetenzzentrum Wasser Berlin erstellten Inhalte und Medien. Dazu gehören insbesondere Grafiken, Bilder, Videos und Sounds der Spiellevel, die zugehörigen Level-Konfigurationen, CMS-Datenbankinhalte, hochgeladene CMS-Medien sowie Kombi-Share-Videos. Diese werden separat bereitgestellt.
+Nicht enthalten sind die für die Ausführung des Spiels erstellten Inhalte und Medien. Dazu gehören insbesondere Grafiken, Bilder, Videos und Sounds der Spiellevel, die zugehörigen Level-Konfigurationen, CMS-Datenbankinhalte, hochgeladene CMS-Medien sowie Kombi-Share-Videos. Diese werden separat bereitgestellt.
 
 Der Checkout bildet damit die technische Grundlage und Architektur des Spiels, enthält jedoch nicht die vollständig befüllte Ausführung für die Berliner Regenwasseragentur / KWB.
 
